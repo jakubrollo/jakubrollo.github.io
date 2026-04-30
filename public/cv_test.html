@@ -258,6 +258,22 @@
             line-height: 1.6; 
         }
 
+        /* --- ANIMATIONS --- */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
         @media screen and (max-width: 768px) {
             .container { grid-template-columns: 1fr; }
         }
@@ -269,10 +285,16 @@
         <div class="left-column">
             <div class="header">
                 <img src="foto.jpg" alt="Jakub Rollo" class="profile-photo">
-                <h1>Jakub Rollo</h1>
+                <h1 style="opacity: 0; animation: fadeIn 1s ease-out forwards;">Jakub Rollo</h1>
+                <style>
+                    @keyframes fadeIn {
+                        from { opacity: 0; transform: translateY(-10px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+                </style>
             </div>
            
-            <div class="section">
+            <div class="section fade-in-up">
                 <div class="section-title">Contact</div>
                 <div class="contact-item">
                     <svg fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
@@ -292,7 +314,7 @@
                 </div>
             </div>
 
-            <div class="section">
+            <div class="section fade-in-up delay-1">
                 <div class="section-title">Skills</div>
                 
                 <div class="skill-group">
@@ -338,7 +360,7 @@
                 </div>
             </div>
 
-        <div class="section">
+        <div class="section fade-in-up delay-2">
                 <div class="section-title">Languages</div>
                 <div class="language-item">
                     <span class="language-name">Czech</span>
@@ -369,7 +391,7 @@
                 </div>
             </div>
 
-            <div class="section">
+            <div class="section fade-in-up delay-3">
                 <div class="section-title">Interests</div>
                 <div class="interests-grid">
                     <div class="interest-item">AI & Generative Models</div>
@@ -385,12 +407,12 @@
         <div class="right-column">
            
             <div class="section">
-                <div class="profile-text">
+                <div class="profile-text fade-in-up">
                     AI/GameDev-focused Computer Science student with passion for programming video games, building game engines and low-level optimization. Interested in performance-oriented systems, modern machine learning techniques and utilizing Large Language Models.
                 </div>
             </div>
 
-            <div class="section">
+            <div class="section fade-in-up delay-1">
                 <div class="section-title">Projects</div>
                
                 <div class="timeline-wrapper">
@@ -417,7 +439,7 @@
             </div>
 
 
-            <div class="section">
+            <div class="section fade-in-up delay-2">
                 <div class="section-title">Education</div>
                
                 <div class="timeline-wrapper">
@@ -431,7 +453,7 @@
                     </div>
                 </div>
             </div>
-            <div class="section">
+            <div class="section fade-in-up delay-3">
                 <div class="section-title">Work Experience</div>
                
                 <div class="timeline-wrapper">
@@ -446,5 +468,41 @@
             </div>
         </div>
     </div>
+
+    <!-- Intersection Observer script to animate elements on display -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const animatedElements = document.querySelectorAll('.fade-in-up');
+            animatedElements.forEach((el) => {
+                observer.observe(el);
+            });
+            
+            // Add staggered delay to timeline items for smoother entrance
+            const timelines = document.querySelectorAll('.timeline-wrapper');
+            timelines.forEach(timeline => {
+                const items = timeline.querySelectorAll('.timeline-item');
+                items.forEach((item, index) => {
+                   item.style.transitionDelay = `${index * 0.15}s`; 
+                   item.classList.add('fade-in-up');
+                   observer.observe(item);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
