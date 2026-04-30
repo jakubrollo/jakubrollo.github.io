@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  --color-space-900: #020205;
+  --color-space-800: #080b1a;
+}
+
+body {
+  cursor: crosshair;
+  background-color: var(--color-space-900);
+  color: #e2e8f0;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Orbit Animations */
+@keyframes orbit {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes counterOrbit {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+
+.orbit-container {
+  animation: orbit var(--duration, 20s) linear infinite;
+  transform-origin: center center;
+}
+
+.counter-orbit {
+  animation: counterOrbit var(--duration, 20s) linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.twinkle {
+  animation: twinkle var(--twinkle-duration, 3s) ease-in-out infinite alternate;
+}
+
+.planet-base {
+  border-radius: 50%;
+  box-shadow: inset -5px -10px 30px rgba(0, 0, 0, 0.8),
+              inset 5px 5px 20px rgba(255, 255, 255, 0.2),
+              0 0 15px rgba(255, 255, 255, 0.1);
+  transition: box-shadow 0.3s ease, scale 0.3s ease;
+}
+
+.planet-base:hover {
+  scale: 1.05;
+  box-shadow: inset -5px -10px 30px rgba(0, 0, 0, 0.8),
+              inset 5px 5px 20px rgba(255, 255, 255, 0.2),
+              0 0 35px var(--glow-color, rgba(167, 243, 208, 0.4));
+}
