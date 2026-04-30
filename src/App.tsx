@@ -12,7 +12,7 @@ export default function App() {
   const activePlanetRef = useRef(UNIVERSE[0].id);
   
   const [trackedId, setTrackedId] = useState<string | null>(null);
-  const trackBodyRef = useRef<HTMLElement | null>(null);
+  const isDraggingRef = useRef(false);
 
   const galaxyWidth = 4000;
   const galaxyHeight = 4000;
@@ -38,66 +38,99 @@ export default function App() {
     centerOn(UNIVERSE[0]);
   }, [centerOn]);
 
-  const checkClosestPlanet = useCallback((currentX: number, currentY: number) => {
+  const checkClosestPlanet = useCallback(() => {
     const ww = window.innerWidth;
     const wh = window.innerHeight;
-    const centerX = ww / 2 - currentX;
-    const centerY = wh / 2 - currentY;
+    const centerX = ww / 2;
+    const centerY = wh / 2;
 
-    let closest = activePlanetRef.current;
+    const planetElements = document.querySelectorAll('.planet-base');
     let minDistance = Infinity;
+    let closestId: string | null = null;
+    let closestEl: HTMLElement | null = null;
 
-    for (const p of UNIVERSE) {
-      const dist = Math.sqrt(Math.pow(p.x - centerX, 2) + Math.pow(p.y - centerY, 2));
+    planetElements.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      const elCx = rect.left + rect.width / 2;
+      const elCy = rect.top + rect.height / 2;
+      const dist = Math.sqrt(Math.pow(elCx - centerX, 2) + Math.pow(elCy - centerY, 2));
+
       if (dist < minDistance) {
         minDistance = dist;
-        closest = p.id;
+        closestId = (el as HTMLElement).dataset.id || null;
+        closestEl = el as HTMLElement;
       }
+    });
+
+    if (closestId && closestId !== activePlanetRef.current && minDistance < 1000) {
+       // Only update nav cluster for main systems, but we can just set it
+       activePlanetRef.current = closestId;
+       setActivePlanetId(closestId);
     }
 
-    if (closest !== activePlanetRef.current && minDistance < 1000) {
-       activePlanetRef.current = closest;
-       setActivePlanetId(closest);
+    // Auto-track logic
+    if (!isDraggingRef.current && !subPage) {
+      // If we are not currently tracking anything, try to snap to the closest if within radius
+      if (!trackedId && minDistance < 250 && closestId) {
+        setTrackedId(closestId);
+      }
+      // Note: We no longer auto-break the lock based on distance. 
+      // The lock is only broken when the user clicks and drags the galaxy (onDragStart).
+      // This ensures that clicking/hovering a distant planet guarantees the camera travels all the way to it!
     }
-  }, []);
+  }, [trackedId, subPage]);
 
-  useMotionValueEvent(x, "change", (latestX) => checkClosestPlanet(latestX, y.get()));
-  useMotionValueEvent(y, "change", (latestY) => checkClosestPlanet(x.get(), latestY));
+  // Use passive requestAnimationFrame to check proximity instead of motion values directly since Moons move
+  useEffect(() => {
+    let animationFrameId: number;
+    const proximityLoop = () => {
+      checkClosestPlanet();
+      animationFrameId = requestAnimationFrame(proximityLoop);
+    };
+    animationFrameId = requestAnimationFrame(proximityLoop);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [checkClosestPlanet]);
 
   const startTracking = useCallback((el: HTMLElement, id: string) => {
-    trackBodyRef.current = el;
+    // Allows instant manual click/hover snap
     setTrackedId(id);
   }, []);
 
   const stopTracking = useCallback(() => {
-    trackBodyRef.current = null;
-    setTrackedId(null);
+    // Empty, don't break lock on pointer down 
   }, []);
 
   useEffect(() => {
     let animationFrameId: number;
     const loop = () => {
-      if (trackBodyRef.current && !subPage) {
-        const rect = trackBodyRef.current.getBoundingClientRect();
-        const ww = window.innerWidth;
-        const wh = window.innerHeight;
-        
-        const elCx = rect.left + rect.width / 2;
-        const elCy = rect.top + rect.height / 2;
-        
-        const dx = elCx - ww/2;
-        const dy = elCy - wh/2;
-        
-        if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
-          x.set(x.get() - dx * 0.08);
-          y.set(y.get() - dy * 0.08);
+      if (trackedId && !subPage) {
+        const el = document.querySelector(`[data-id="${trackedId}"]`) as HTMLElement;
+        if (el) {
+          const ww = window.innerWidth;
+          const wh = window.innerHeight;
+          
+          // Get screen-space coordinates of the locked element
+          const rect = el.getBoundingClientRect();
+          const elCx = rect.left + rect.width / 2;
+          const elCy = rect.top + rect.height / 2;
+          
+          // Distance from screen center
+          const dx = elCx - ww/2;
+          const dy = elCy - wh/2;
+          
+          // Gently drag the galaxy to keep it centered
+          if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+            const ease = isDraggingRef.current ? 0.0 : 0.15; // Track faster when not dragging
+            x.set(x.get() - dx * ease);
+            y.set(y.get() - dy * ease);
+          }
         }
       }
       animationFrameId = requestAnimationFrame(loop);
     };
     loop();
     return () => cancelAnimationFrame(animationFrameId);
-  }, [x, y, subPage]);
+  }, [x, y, subPage, trackedId]);
 
   const isScrolling = useRef(false);
   useEffect(() => {
@@ -134,7 +167,14 @@ export default function App() {
 
       <motion.div
         drag
-        onPointerDown={stopTracking}
+        onDragStart={() => {
+          isDraggingRef.current = true;
+          // Temporarily break tracking so we don't fight the user drag
+          setTrackedId(null);
+        }}
+        onDragEnd={() => {
+          isDraggingRef.current = false;
+        }}
         dragConstraints={{
           left: -(galaxyWidth - (typeof window !== 'undefined' ? window.innerWidth : 1000) + 200),
           right: 200,
@@ -191,34 +231,34 @@ export default function App() {
          </div>
       </div>
 
-      {/* Subpage Overlay */}
+      {/* Subpage Overlay: Half screen on the right */}
       <AnimatePresence>
         {subPage && (
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-xl flex flex-col items-center pt-32 px-4 md:px-8 overflow-y-auto"
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ type: "spring", damping: 30, stiffness: 300 }}
+            className="fixed top-0 right-0 h-full w-full md:w-[60%] lg:w-[45%] xl:w-[35%] z-[100] bg-slate-950/95 backdrop-blur-3xl shadow-2xl border-l border-white/5 flex flex-col pt-24 px-8 md:px-12 overflow-y-auto"
           >
             <button 
               onClick={() => setSubPage(null)}
-              className="fixed top-8 left-8 md:top-12 md:left-12 text-white/50 hover:text-white flex items-center gap-2 font-bold text-[11px] tracking-[0.2em] uppercase transition-colors"
+              className="absolute top-8 left-8 text-white/50 hover:text-white flex items-center gap-2 font-bold text-[11px] tracking-[0.2em] uppercase transition-colors"
             >
-              <ArrowLeft className="w-4 h-4" /> Return to Orbit
+              <ArrowLeft className="w-4 h-4" /> Close
             </button>
-            <div className="max-w-3xl w-full pb-32">
-              <div className="flex items-center gap-6 mb-8">
-                <div className={`w-16 h-16 rounded-full ${subPage.color} shadow-[0_0_30px_rgba(255,255,255,0.1)] planet-base flex-shrink-0`}></div>
+            <div className="w-full pb-32">
+              <div className="flex flex-col gap-6 mb-8 pt-4">
+                <div className={`w-24 h-24 rounded-full ${subPage.color} shadow-[0_0_40px_rgba(255,255,255,0.1)] planet-base flex-shrink-0 self-start`}></div>
                 <div>
-                   <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">{subPage.name}</h1>
-                   <div className="text-[11px] font-bold text-blue-400 uppercase tracking-[0.2em] mt-2">
+                   <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight">{subPage.name}</h1>
+                   <div className="text-[11px] font-bold text-blue-400 uppercase tracking-[0.2em] mt-3">
                      Classification: {subPage.type === 'planet' ? 'Primary Celestial Body' : 'Orbital Satellite'}
                    </div>
                 </div>
               </div>
-              <div className="h-[1px] w-full bg-white/10 mb-12"></div>
-              <div className="text-slate-300 text-lg leading-relaxed font-light whitespace-pre-wrap">
+              <div className="h-[1px] w-full bg-white/10 mb-8"></div>
+              <div className="text-slate-300 text-base leading-relaxed font-light whitespace-pre-wrap">
                 {subPage.content}
               </div>
             </div>

@@ -45,6 +45,7 @@ export function PlanetSystem({
         onMouseLeave={handleMouseLeave}
         className={`relative w-full h-full rounded-full ${system.color} planet-base cursor-pointer z-10 group`}
         style={{ '--glow-color': system.glowColor || 'rgba(255,255,255,0.4)' } as any}
+        data-id={system.id}
       >
         {/* Label Always Visible */}
         <div className={`absolute top-[110%] left-1/2 -translate-x-1/2 mt-2 ${system.labelColor || 'text-white'} font-bold text-[11px] tracking-[0.2em] uppercase whitespace-nowrap pointer-events-none`}>
@@ -78,6 +79,7 @@ export function PlanetSystem({
             >
               {/* The Moon itself */}
               <div
+                data-id={moon.id}
                 className={`absolute rounded-full ${moon.color} planet-base pointer-events-auto cursor-pointer group`}
                 style={{
                   width: moon.size,
