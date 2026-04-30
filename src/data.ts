@@ -10,6 +10,7 @@ export type CelestialBody = {
   moons?: CelestialBody[];
   distance?: number;
   orbitSpeed?: number;
+  link?: string;
 };
 
 export type System = CelestialBody & {
@@ -29,6 +30,7 @@ export const UNIVERSE: System[] = [
     x: 1200,
     y: 1500,
     content: "I'm a Frontend Developer and UI/UX Designer who loves building immersive digital experiences. The web is essentially a vast universe of information, and I enjoy creating the telescopes (and sometimes spaceships) that help users navigate it. My stack mainly consists of React, TypeScript, and modern CSS tooling.",
+    link: './cv_test.html',
     moons: [
       {
         id: 'skills',

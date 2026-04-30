@@ -158,7 +158,13 @@ export default function App() {
             <PlanetSystem 
               key={system.id} 
               system={system} 
-              onSelect={(body) => setSubPage(body)} 
+              onSelect={(body) => {
+                if (body.link) {
+                  window.location.href = body.link;
+                } else {
+                  setSubPage(body);
+                }
+              }} 
               onStartTrack={startTracking}
               trackedId={trackedId}
             />

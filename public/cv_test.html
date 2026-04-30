@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jakub Rollo - Resume</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            display: grid;
+            grid-template-columns: 30% 70%;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* --- LEFT COLUMN --- */
+        .left-column {
+            background: linear-gradient(135deg, #667eea 0%, #166a80 100%);
+            color: white;
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* Subtle geometric background shapes for depth */
+        .left-column::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            top: -50px;
+            left: -100px;
+            z-index: -1;
+            border-radius: 50%;
+        }
+        .left-column::after {
+            content: '';
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border: 2px solid rgba(255,255,255,0.05);
+            bottom: 10%;
+            right: -100px;
+            z-index: -1;
+            border-radius: 50%;
+            transform: rotate(45deg);
+        }
+
+        .left-column .section {
+            margin-bottom: 45px;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .profile-photo {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2), 0 0 0 8px rgba(255,255,255,0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-photo:hover {
+            transform: scale(1.02);
+        }
+
+        .header h1 {
+            font-size: 2.3em;
+            margin-bottom: 5px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .contact-item {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            word-break: break-all;
+            font-size: 1.05em;
+        }
+
+        .contact-item svg {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .contact-item a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+       
+        .contact-item a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        /* Skills (Tags/Pills) */
+        .skill-group {
+            margin-bottom: 18px;
+        }
+        .skill-category {
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .skill-tag {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            backdrop-filter: blur(5px);
+            transition: all 0.2s;
+        }
+        .skill-tag:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Languages (Visual Dots) */
+        .language-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 1.05em;
+        }
+        .language-name {
+            font-weight: 500;
+        }
+        .language-level {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .level-text {
+            font-size: 0.85em;
+            opacity: 0.8;
+            font-weight: 600;
+        }
+        .dots {
+            display: flex;
+            gap: 4px;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+        }
+        .dot.active {
+            background: white;
+            box-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+
+        /* Interests */
+        .interests-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        .interest-item {
+            background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            padding: 4px 12px;
+            border-left: 3px solid white;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.95em;
+        }
+
+        /* --- RIGHT COLUMN --- */
+        .right-column { 
+            padding: 40px 50px; 
+        }
+
+        .right-column .section {
+            margin-bottom: 23px;
+        }
+
+        /* Added Extra spacing above right-column sections (except the first one) */
+        .right-column .section + .section {
+            margin-top: 23px;
+        }
+
+        .right-column .section-title { 
+            color: #667eea; 
+            border-bottom: 2px solid #667eea; 
+            display: block; 
+            margin-bottom: 23px; /* slightly increased space below header */
+        }
+        
+        .timeline-wrapper { padding-left: 5px; }
+        .timeline-item { position: relative; padding-left: 40px; padding-bottom: 30px; }
+        .timeline-item::before { content: ''; position: absolute; left: 7px; top: 5px; height: 100%; width: 2px; background: #e0e0e0; z-index: 1; }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-item:last-child::before { display: none; }
+        .timeline-item::after { content: ''; position: absolute; left: 0; top: 0; width: 16px; height: 16px; border-radius: 50%; background: white; border: 3px solid #667eea; z-index: 2; box-shadow: 0 0 0 4px white; }
+        .timeline-item:hover::after { background: #667eea; transform: scale(1.1); transition: all 0.2s ease; }
+        
+        .item-header { margin-bottom: 5px; margin-top: -4px; }
+        .item-title { font-size: 1.15em; font-weight: 700; color: #333; }
+        .item-subtitle { font-size: 1em; color: #667eea; font-weight: 600; }
+        .item-date { font-size: 0.85em; color: #888; font-weight: 500; margin-bottom: 5px; display: inline-block; background: #f0f0f0; padding: 2px 8px; border-radius: 4px; margin-top: 4px; }
+        .item-description { color: #555; }
+        .item-description ul { margin-left: 20px; margin-top: 5px; }
+        .item-description li { margin-bottom: 6px; }
+        .item-description a { color: #667eea; text-decoration: none; font-weight: 500; }
+        .item-description a:hover { text-decoration: underline; }
+        
+        .profile-text { 
+            color: #555; 
+            font-size: 1.05em; 
+            line-height: 1.6; 
+        }
+
+        @media screen and (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- LEFT COLUMN -->
+        <div class="left-column">
+            <div class="header">
+                <img src="foto.jpg" alt="Jakub Rollo" class="profile-photo">
+                <h1>Jakub Rollo</h1>
+            </div>
+           
+            <div class="section">
+                <div class="section-title">Contact</div>
+                <div class="contact-item">
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+                    <div>jakubrollo10@gmail.com</div>
+                </div>
+                <div class="contact-item">
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+                    <div>+420 725 409 548</div>
+                </div>
+                <div class="contact-item">
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+                    <div>Brandýs nad Labem / Prague</div>
+                </div>
+                <div class="contact-item">
+                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <div><a href="https://github.com/jakubrollo" target="_blank">github.com/jakubrollo</a></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Skills</div>
+                
+                <div class="skill-group">
+                    <div class="skill-category">Engines & Tools</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Unity</span>
+                        <span class="skill-tag">Godot</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">Azure Cloud</span>
+                        <span class="skill-tag">OpenGL</span>
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <div class="skill-category">Languages</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">C#</span>
+                        <span class="skill-tag">C++</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">SQL</span>
+                        <span class="skill-tag">HTML/CSS</span>
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <div class="skill-category">Frameworks</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">PyTorch</span>
+                        <span class="skill-tag">.NET MAUI</span>
+                        <span class="skill-tag">ASP.NET</span>
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <div class="skill-category">Concepts</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Evolutionary Algorithms</span>
+                        <span class="skill-tag">Neural Networks </span>
+                        <span class="skill-tag">Parallel Computing</span>
+                        <span class="skill-tag">LLMs</span>
+                    </div>
+                </div>
+            </div>
+
+        <div class="section">
+                <div class="section-title">Languages</div>
+                <div class="language-item">
+                    <span class="language-name">Czech</span>
+                    <div class="language-level">
+                        <span class="level-text">Native</span>
+                        <div class="dots">
+                            <span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot active"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="language-item">
+                    <span class="language-name">English</span>
+                    <div class="language-level">
+                        <span class="level-text">C1</span>
+                        <div class="dots">
+                            <span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot active"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="language-item">
+                    <span class="language-name">Spanish</span>
+                    <div class="language-level">
+                        <span class="level-text">A2/B1</span>
+                        <div class="dots">
+                            <span class="dot active"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Interests</div>
+                <div class="interests-grid">
+                    <div class="interest-item">AI & Generative Models</div>
+                    <div class="interest-item">Game & Engine Development</div>
+                    <div class="interest-item">Digital Content/Art</div>
+                    <div class="interest-item">Ceramics & Sculpture</div>
+                    <div class="interest-item">Bouldering / Gym</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="right-column">
+           
+            <div class="section">
+                <div class="profile-text">
+                    AI/GameDev-focused Computer Science student with passion for programming video games, building game engines and low-level optimization. Interested in performance-oriented systems, modern machine learning techniques and utilizing Large Language Models.
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Projects</div>
+               
+                <div class="timeline-wrapper">
+                    <div class="timeline-item"><div class="item-header">    <div class="item-title">Improving Super Mario level generation with perfect agents</div>   
+                    <div class="item-subtitle">Bachelor Thesis</div></div><div class="item-description">    <ul>       
+                        <li><strong>Contribution:</strong> Enhanced the overall results and generation of procedurally generated Super Mario levels across three existing studies using perfect agents.</li>        
+                        <li><strong>Links:</strong> <a href="https://dspace.cuni.cz/handle/20.500.11956/200759" target="_blank">DSpace Publication</a> | <a href="https://gitlab.com/mff_rolloj/super-mario-astar" target="_blank">GitLab Repository</a></li>    </ul></div>
+                    </div>
+
+                    <div class="timeline-item"><div class="item-header">    <div class="item-title">Game Jams</div>
+                    <div class="item-subtitle">Game Development</div></div><div class="item-description">    <ul>  
+                          <li><strong>Contribution:</strong> Designed, programmed core mechanics, and delivered functional game prototypes under strict <strong>48-hour</strong> time constraints across <strong>5</strong> distinct Game Jams.</li>   
+                            <li><strong>Link:</strong> <a href="https://bedoyaf.itch.io/dvanact-mesicu" target="_blank">Our latest Game</a></li>    </ul></div>
+                    </div>
+
+                    <div class="timeline-item"><div class="item-header">    <div class="item-title">Other Software Projects</div>  
+                    <div class="item-subtitle">Personal Engineering</div></div><div class="item-description">    <ul>     
+                         <li><strong>Game Dev:</strong> Built a custom 2D dungeon crawler game handling core rendering and player mechanics using <strong>C++</strong> and <strong>SFML</strong>. 
+                            <a href="https://github.com/jakubrollo/Alexandrias-Dungeon-Master" target="_blank">GitHub</a> | <a href="https://openbadgepassport.com/app/badge/info/1099717" target="_blank">Game Badge</a></li> 
+                                  <li><strong>Mobile Dev:</strong> Developed cross-platform mobile applications utilizing <strong>.NET MAUI</strong> (C# + XAML) and <strong>Flutter</strong>.</li>     
+                                  <li><strong>AI & Game Engines:</strong> Engineered a variety of AI applications and Godot projects using <strong>Python</strong>, alongside several game and graphics-focused projects in <strong>Unity</strong> utilizing <strong>C#</strong>.</li>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="section">
+                <div class="section-title">Education</div>
+               
+                <div class="timeline-wrapper">
+                    <div class="timeline-item"><div class="item-header">    <div class="item-title">Charles University - Faculty of Mathematics and Physics</div>    <div class="item-subtitle">Master's Degree – Artificial Intelligence (Mgr.)</div>    <div class="item-date">2025 – present</div></div>
+                    </div>
+
+                    <div class="timeline-item"><div class="item-header">    <div class="item-title">Charles University - Faculty of Mathematics and Physics</div>    <div class="item-subtitle">Bachelor's Degree – Computer Science (Bc.)</div>    <div class="item-date">2022 – 2025</div></div><div class="item-description">    Specialization: Computer Graphics, Vision and Game Development</div>
+                    </div>
+
+                    <div class="timeline-item"><div class="item-header">    <div class="item-title">J. S. Machar Grammar School</div>    <div class="item-subtitle">Brandýs nad Labem</div>    <div class="item-date">2014 – 2022</div></div><div class="item-description">    High School Diploma with honors.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-title">Work Experience</div>
+               
+                <div class="timeline-wrapper">
+                    <div class="timeline-item"><div class="item-header">    <div class="item-title">Stanislav Sucharda Museum Foundation</div>    <div class="item-subtitle">Board of Directors</div>    <div class="item-date">2026 – present</div></div><div class="item-description">    <ul>        <li>Member of the Board of Directors (Správní rada)</li>    </ul></div>
+                    </div>
+
+                    <div class="timeline-item"><div class="item-header">    <div class="item-title">Hornbach</div>    <div class="item-subtitle">Process Automation Developer</div>   
+                     <div class="item-date">2025 – present</div></div><div class="item-description">    <ul>        
+                        <li><strong>Contribution:</strong> Built and maintained ~10 automated workflow bots using <strong>VBScript</strong> for SAP systems across Czechia and Slovakia that are ran every day.</li>    </ul></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
