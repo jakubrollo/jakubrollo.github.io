@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Murder Mystery Game</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #0F1113; /* Noir dark background */
+      overflow: hidden;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .back-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      padding: 8px 16px;
+      background-color: rgba(23, 26, 30, 0.8);
+      color: #ECE7DD;
+      border: 1px solid #2A2F36;
+      border-radius: 4px;
+      text-decoration: none;
+      font-family: sans-serif;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      transition: background-color 0.2s;
+    }
+    .back-btn:hover {
+      background-color: rgba(42, 47, 54, 0.9);
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- A button to go back to your main space universe view -->
+  <a href="/" class="back-btn">&larr; Return to Orbit</a>
+
+  <!-- REPACE THE SRC BELOW WITH YOUR HUGGINGFACE SPACE DIRECT URL -->
+  <!-- Example: https://jakubrollo-murdermystery.hf.space -->
+  <iframe src="https://rolloj-murdermystery.hf.space" allow="microphone; camera"></iframe>
+
+</body>
+</html>
