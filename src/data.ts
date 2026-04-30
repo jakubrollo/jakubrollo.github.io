@@ -93,14 +93,14 @@ export const UNIVERSE: System[] = [
       {
         id: 'proj3',
         type: 'moon',
-        name: 'Murder Mystery AI',
+        name: 'Murder Mystery',
         color: 'bg-purple-500',
         glowColor: 'rgba(168, 85, 247, 0.4)', // purple-500
         size: 40,
-        content: "A Python-based AI Murder Mystery generator. It uses Answer Set Programming (Clingo ASP) alongside a CustomTkinter UI to procedurally generate uniquely solvable logical puzzles every time you play.",
+        content: "A Python-based Murder Mystery generator. It uses Answer Set Programming (Clingo ASP) alongside a CustomTkinter UI to procedurally generate uniquely solvable logical puzzles every time you play.",
         distance: 430,
         orbitSpeed: 25,
-        link: 'https://github.com/jakubrollo/jakubrollo.github.io/tree/main/murderMystery'
+          link: "/murder-mystery.html", 
       },
       {
         id: 'proj4',
