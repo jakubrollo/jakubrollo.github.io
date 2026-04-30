@@ -29,7 +29,7 @@ export const UNIVERSE: System[] = [
     size: 180,
     x: 1200,
     y: 1500,
-    content: "I'm a Frontend Developer and UI/UX Designer who loves building immersive digital experiences. The web is essentially a vast universe of information, and I enjoy creating the telescopes (and sometimes spaceships) that help users navigate it. My stack mainly consists of React, TypeScript, and modern CSS tooling.",
+    content: "AI/GameDev-focused Computer Science student pursuing a Master's degree at Charles University. I have a passion for programming video games, building game engines, and low-level optimization. I'm highly interested in performance-oriented systems, modern machine learning techniques, and utilizing Large Language Models.",
     link: './cv_test.html',
     moons: [
       {
@@ -39,7 +39,7 @@ export const UNIVERSE: System[] = [
         color: 'bg-slate-300',
         glowColor: 'rgba(203, 213, 225, 0.4)',
         size: 35,
-        content: "React, TypeScript, Next.js, WebGL/Three.js, Framer Motion, Tailwind CSS, Node.js.",
+        content: "Languages: C#, C++, Python, Java. Engines: Unity, Godot. Frameworks & Concepts: PyTorch, Neural Networks, Evolutionary Algorithms, Parallel Computing, OpenGL.",
         distance: 160,
         orbitSpeed: 30
       },
@@ -50,7 +50,7 @@ export const UNIVERSE: System[] = [
         color: 'bg-slate-400',
         glowColor: 'rgba(148, 163, 184, 0.4)',
         size: 25,
-        content: "Over 5 years of crafting frontends for agencies and product companies, focusing on interactive data visualization and experimental UI.",
+        content: "Process Automation Developer at Hornbach (building VBScript bots for SAP systems) and Board of Directors at Stanislav Sucharda Museum Foundation.",
         distance: 210,
         orbitSpeed: 45
       }
@@ -66,38 +66,38 @@ export const UNIVERSE: System[] = [
     size: 280,
     x: 2300,
     y: 1000,
-    content: "My projects span from interactive data dashboards to creative coding experiments. I try to combine robust engineering with high-fidelity visuals. Each satellite orbiting this system represents a key project I've shipped.",
+    content: "My projects span cutting-edge AI research to custom game engines and 48-hour game jams. I combine robust, low-level engineering with high-level mechanics. Here are some of my key works orbiting this system.",
     moons: [
       {
         id: 'proj1',
         type: 'moon',
-        name: 'Nebula Protocol',
+        name: 'Super Mario AI Thesis',
         color: 'bg-slate-300',
         glowColor: 'rgba(203, 213, 225, 0.4)',
         size: 50,
-        content: "A decentralized finance dashboard with real-time token tracking. Built with React and WebSockets, rendering thousands of transactions smoothly.",
+        content: "Bachelor Thesis: Enhanced procedural level generation for Super Mario across three existing studies using perfect agents.",
         distance: 260,
         orbitSpeed: 35
       },
       {
         id: 'proj2',
         type: 'moon',
-        name: 'Astro Type',
+        name: 'Game Jams',
         color: 'bg-slate-400',
         glowColor: 'rgba(148, 163, 184, 0.4)',
         size: 45,
-        content: "An experimental typography tool that generates kinetic text animations. Users can export directly to video or Lottie format.",
+        content: "Participated in 5 distinct Game Jams. Designed and programmed core mechanics to deliver functional game prototypes under strict 48-hour time constraints.",
         distance: 350,
         orbitSpeed: 50
       },
       {
         id: 'proj3',
         type: 'moon',
-        name: 'Void Runner',
+        name: 'Custom C++ Engine',
         color: 'bg-slate-500',
         glowColor: 'rgba(100, 116, 139, 0.4)',
         size: 35,
-        content: "A WebGL-based browser game where you dodge debris in a procedurally generated asteroid belt. Uses Three.js and custom shaders.",
+        content: "Built a custom 2D dungeon crawler game handling core rendering and player mechanics using C++ and SFML.",
         distance: 430,
         orbitSpeed: 65
       }
@@ -113,7 +113,7 @@ export const UNIVERSE: System[] = [
     size: 140,
     x: 2800,
     y: 2200,
-    content: "Hailing frequencies are open. Feel free to transmit a message if you'd like to collaborate, talk shop, or just say hello.\n\nEmail: hello@example.space\nTwitter: @cosmic_dev",
+    content: "Let's connect!\n\nEmail: jakubrollo10@gmail.com\nGitHub: github.com/jakubrollo\nLocation: Brandýs nad Labem / Prague",
     moons: []
   }
 ];
