@@ -151,6 +151,8 @@ export default function App() {
         isScrolling.current = true;
         const nextPlanet = UNIVERSE[nextIndex];
         centerOn(nextPlanet);
+        // Lock tracking to the new planet so it stays centered
+        setTrackedId(nextPlanet.id);
         setTimeout(() => {
           isScrolling.current = false;
         }, 800);
@@ -187,8 +189,8 @@ export default function App() {
         <motion.div 
            className="w-full h-full relative"
            animate={{
-             filter: subPage ? 'blur(10px) brightness(0.5)' : 'blur(0px) brightness(1)',
-             scale: subPage ? 0.95 : 1
+             filter: 'blur(0px) brightness(1)',
+             scale: 1
            }}
            transition={{ duration: 0.8, ease: "easeOut" }}
         >
@@ -234,13 +236,22 @@ export default function App() {
       {/* Subpage Overlay: Half screen on the right */}
       <AnimatePresence>
         {subPage && (
-          <motion.div
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed top-0 right-0 h-full w-full md:w-[60%] lg:w-[45%] xl:w-[35%] z-[100] bg-slate-950/95 backdrop-blur-3xl shadow-2xl border-l border-white/5 flex flex-col pt-24 px-8 md:px-12 overflow-y-auto"
-          >
+          <>
+            {/* Subtle overlay that doesn't block interaction */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-[99] bg-black/20 pointer-events-none"
+            />
+            <motion.div
+              initial={{ opacity: 0, x: "100%" }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="fixed top-0 right-0 h-full w-full md:w-[60%] lg:w-[45%] xl:w-[35%] z-[100] bg-slate-950/95 backdrop-blur-3xl shadow-2xl border-l border-white/5 flex flex-col pt-24 px-8 md:px-12 overflow-y-auto"
+            >
             <button 
               onClick={() => setSubPage(null)}
               className="absolute top-8 left-8 text-white/50 hover:text-white flex items-center gap-2 font-bold text-[11px] tracking-[0.2em] uppercase transition-colors"
@@ -262,7 +273,8 @@ export default function App() {
                 {subPage.content}
               </div>
             </div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </div>

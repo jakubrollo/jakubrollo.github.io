@@ -77,7 +77,8 @@ export const UNIVERSE: System[] = [
         size: 50,
         content: "Bachelor Thesis: Enhanced procedural level generation for Super Mario across three existing studies using perfect agents.",
         distance: 260,
-        orbitSpeed: 35
+        orbitSpeed: 35,
+        link: 'https://dspace.cuni.cz/handle/20.500.11956/200759'
       },
       {
         id: 'proj2',
